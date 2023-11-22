@@ -15,10 +15,10 @@ const Home = () => {
                                 <span className="edoc-logo-sub">| THE ECHANNELING PROJECT</span>
                             </td>
                             <td width="10%">
-                                <Link to="/" className="non-style-link"><p className="nav-item">LOGIN</p></Link>
+                                <Link to="/login" className="non-style-link"><p className="nav-item">LOGIN</p></Link>
                             </td>
                             <td width="10%">
-                                <Link to="/" className="non-style-link"><p className="nav-item" style={{ paddingRight: '10px' }}>REGISTER</p></Link>
+                                <Link to="/signup" className="non-style-link"><p className="nav-item" style={{ paddingRight: '10px' }}>REGISTER</p></Link>
                             </td>
                         </tr>
 
