@@ -82,7 +82,7 @@ const Login = () => {
           <label htmlFor="" className="sub-text" style={{ fontWeight: 280 }}>
             Don't have an account?{' '}
           </label>
-          <Link to="/" className="hover-link1 non-style-link">
+          <Link to="/signup" className="hover-link1 non-style-link">
             Sign Up
           </Link>
           <br />

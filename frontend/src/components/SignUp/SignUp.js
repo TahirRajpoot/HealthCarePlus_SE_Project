@@ -159,7 +159,7 @@ const SignUp = () => {
                   <label htmlFor="" className="sub-text" style={{ fontWeight: '280' }}>
                     Already have an account?{' '}
                   </label>
-                  <Link to="/" className="hover-link1 non-style-link">
+                  <Link to="/login" className="hover-link1 non-style-link">
                     Login
                   </Link>
                   <br />
