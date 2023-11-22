@@ -1,17 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 const bodyparser = require("body-parser");
+
 const port = 8080;
 
-
 require("./utilis/db");
-const userroutes = require("./routes/userRoutes")
-
-
 const app = express();
-app.use(bodyparser.json());
-app.use("/api", userroutes);
+const userroutes = require("./routes/userRoutes")
 app.use(cors());
+app.use(bodyparser.json());
+
+
+app.use("/api", userroutes);
+
+
+
 
 
 app.listen(port, ()=>{

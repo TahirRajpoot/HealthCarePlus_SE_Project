@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import "./SignUp.css";
 
 
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    fname: '',
-    lname: '',
-    address: '',
-    nic: '',
-    dob: '',
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    role: '',
   });
 
   const handleChange = (e) => {
@@ -19,19 +20,37 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form data submitted:', formData);
+
+    try {
+      console.log('Form data submitted:', formData);
+  
+      await fetch('http://localhost:8080/api/users',{
+        body: JSON.stringify(formData),
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+  
+    }
   };
+
 
   const handleReset = () => {
     setFormData({
-      fname: '',
-      lname: '',
-      address: '',
-      nic: '',
-      dob: '',
+      name: '',
+      username: '',
+      email: '',
+      password: '',
+      role: '',
     });
   };
 
@@ -58,10 +77,10 @@ const SignUp = () => {
                 <td className="label-td">
                   <input
                     type="text"
-                    name="fname"
+                    name="name"
                     className="input-text"
-                    placeholder="First Name"
-                    value={formData.fname}
+                    placeholder="Name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                   />
@@ -69,10 +88,10 @@ const SignUp = () => {
                 <td className="label-td">
                   <input
                     type="text"
-                    name="lname"
+                    name="username"
                     className="input-text"
-                    placeholder="Last Name"
-                    value={formData.lname}
+                    placeholder="User Name"
+                    value={formData.username}
                     onChange={handleChange}
                     required
                   />
@@ -92,7 +111,7 @@ const SignUp = () => {
                     name="email"
                     className="input-text"
                     placeholder="Email"
-                    value={formData.address}
+                    value={formData.email}
                     onChange={handleChange}
                     required
                   />
@@ -100,8 +119,8 @@ const SignUp = () => {
               </tr>
               <tr>
                 <td className="label-td" colSpan="2">
-                  <label htmlFor="nic" className="form-label">
-                    NIC:{' '}
+                  <label htmlFor="password" className="form-label">
+                    Password:{' '}
                   </label>
                 </td>
               </tr>
@@ -109,10 +128,10 @@ const SignUp = () => {
                 <td className="label-td" colSpan="2">
                   <input
                     type="text"
-                    name="nic"
+                    name="password"
                     className="input-text"
-                    placeholder="NIC Number"
-                    value={formData.nic}
+                    placeholder="Password"
+                    value={formData.password}
                     onChange={handleChange}
                     required
                   />
@@ -120,18 +139,18 @@ const SignUp = () => {
               </tr>
               <tr>
                 <td className="label-td" colSpan="2">
-                  <label htmlFor="dob" className="form-label">
-                    Date of Birth:{' '}
+                  <label htmlFor="role" className="form-label">
+                    Role:{' '}
                   </label>
                 </td>
               </tr>
               <tr>
                 <td className="label-td" colSpan="2">
                   <input
-                    type="date"
-                    name="dob"
+                    type="text"
+                    name="role"
                     className="input-text"
-                    value={formData.dob}
+                    value={formData.role}
                     onChange={handleChange}
                     required
                   />
