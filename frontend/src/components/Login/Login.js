@@ -1,39 +1,38 @@
-import React, { useState } from 'react';
-import "./Login.css";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-    const [userEmail, setUserEmail] = useState('');
-    const [userpassword, setUserPassword] = useState('');
-    const [error, setError] = useState('');
-  
-    const handleLogin = async (e) => {
-      e.preventDefault();
-  
-      try {
-        const response = await fetch('http://localhost:8080/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userEmail, userpassword }),
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          // Redirect or handle successful login
-          console.log('Login successful:', data.user);
-        } else {
-          setError(data.error);
-        }
-      } catch (error) {
-        console.error('Error:', error);
+  const [userEmail, setUserEmail] = useState("");
+  const [userpassword, setUserPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:8080/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userEmail, userpassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Redirect or handle successful login
+        console.log("Login successful:", data.user);
+      } else {
+        setError(data.error);
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <form onSubmit={handleLogin}>
         <p className="header-text">Welcome Back!</p>
         <p className="sub-text">Login with your details to continue</p>
@@ -74,13 +73,17 @@ const Login = () => {
         </div>
 
         <div>
-          <input type="submit" value="Login" className="login-btn btn-primary btn" />
+          <input
+            type="submit"
+            value="Login"
+            className="login-btns btn-primary btn"
+          />
         </div>
 
         <div>
           <br />
           <label htmlFor="" className="sub-text" style={{ fontWeight: 280 }}>
-            Don't have an account?{' '}
+            Don't have an account?{" "}
           </label>
           <Link to="/signup" className="hover-link1 non-style-link">
             Sign Up

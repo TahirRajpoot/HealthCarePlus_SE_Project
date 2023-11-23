@@ -1,10 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #F6F7FA;
-}
-
-.container {
+.login-container {
     width: 45%;
     background-color: white;
     border: 1px solid #ebebeb;
@@ -53,7 +47,7 @@ body {
     margin-top: 5px;
 }
 
-.login-btn {
+.login-btns {
     width: 100%;
     padding: 10px;
     background-color: #4caf50;
@@ -63,7 +57,7 @@ body {
     cursor: pointer;
 }
 
-.login-btn:hover {
+.login-btns:hover {
     background-color: #45a049;
 }
 
