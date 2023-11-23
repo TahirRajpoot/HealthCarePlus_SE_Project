@@ -2,32 +2,48 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [userEmail, setUserEmail] = useState("");
-  const [userpassword, setUserPassword] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const BASE_API_URL = "http://localhost:8080";
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const response = await fetch(`${BASE_API_URL}/api/login`, {
+        body: JSON.stringify(formData),
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userEmail, userpassword }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // Redirect or handle successful login
-        console.log("Login successful:", data.user);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("Error data:", errorData);
+        setErrorMessage(errorData.message || "An error occurred during Login.");
+        setSuccessMessage("");
       } else {
-        setError(data.error);
+        setSuccessMessage("User Login successfully.");
+        setErrorMessage("");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error submitting form:", error);
+      setErrorMessage("An unexpected error occurred during signup.");
+      setSuccessMessage("");
     }
   };
 
@@ -38,39 +54,39 @@ const Login = () => {
         <p className="sub-text">Login with your details to continue</p>
 
         <div className="label-td">
-          <label htmlFor="useremail" className="form-label">
+          <label htmlFor="email" className="form-label">
             Email:
           </label>
           <input
             type="email"
-            name="useremail"
+            name="email"
             className="input-text"
             placeholder="Email Address"
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
           />
         </div>
 
         <div className="label-td">
-          <label htmlFor="userpassword" className="form-label">
+          <label htmlFor="password" className="form-label">
             Password:
           </label>
           <input
             type="password"
-            name="userpassword"
+            name="password"
             className="input-text"
             placeholder="Password"
-            value={userpassword}
-            onChange={(e) => setUserPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
           />
         </div>
 
-        <div>
+        {/* <div>
           <br />
           {error && <p>{error}</p>}
-        </div>
+        </div> */}
 
         <div>
           <input
@@ -82,6 +98,11 @@ const Login = () => {
 
         <div>
           <br />
+          {errorMessage && (
+            <p className="errorMsg login-error">{errorMessage}</p>
+          )}
+          {successMessage && <p className="successMsg">{successMessage}</p>}
+
           <label htmlFor="" className="sub-text" style={{ fontWeight: 280 }}>
             Don't have an account?{" "}
           </label>

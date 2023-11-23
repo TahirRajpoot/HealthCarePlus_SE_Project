@@ -29,7 +29,7 @@ const Register = () => {
     try {
       console.log("Form data submitted:", formData);
 
-      const response = await fetch(`${BASE_API_URL}/api/users`, {
+      const response = await fetch(`${BASE_API_URL}/api/register`, {
         body: JSON.stringify(formData),
         method: "POST",
         headers: {
