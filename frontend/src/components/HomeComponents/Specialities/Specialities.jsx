@@ -4,7 +4,7 @@ import { colors } from "../../../colors";
 import { fonts } from "../../../fonts";
 import Layout from "../../Global/components/Layout/Layout";
 import Section from "../../Global/components/Section/Section";
-import SpecialitiesData from "../../../Data/SpecialitiesData/SpecialitiesData";
+import SpecialitiesData from "../../../Data/SpecialitiesData";
 
 const StyledLayout = styled(Layout)``;
 

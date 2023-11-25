@@ -1,4 +1,4 @@
-import PrimaryCare from "../assets/images/primary-care";
+import PrimaryCare from "../assets/images/primary-care.svg";
 import Pediatrics from "../assets/images/pediatrics.svg";
 import Furnished from "../assets/images/furnished.svg";
 import PhysicalTherapy from "../assets/images/physical-therapy.svg";

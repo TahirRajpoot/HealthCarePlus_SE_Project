@@ -7,6 +7,7 @@ import Button from "../../Global/components/Button/Button";
 import RightHero from "../../../assets/images/right-hero.svg";
 import Layout from "../../Global/components/Layout/Layout";
 import CovidDetails from "../CovidDetails/CovidDetails";
+import { fonts } from "../../../fonts";
 
 const HeroSectionContainer = styled(Section)``;
 

@@ -23,7 +23,7 @@ const HomeScreen = () => {
     <HomeContainer>
       <NavBar />
       <HeroSection />
-      <CovidChart />
+      {/* <CovidChart /> */}
       <SolutionSteps />
       <Advantages />
       <Specialities />

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { colors } from "../../../colors";
-import { axiosRequests } from "../../../utils/axiosRequests";
-import { internationalNumber } from "../../../utils/internationalNumber";
+import axiosRequests from "../../../utils/axiosRequests";
+import internationalNumber from "../../../utils/internationalNumber";
 
 const CovidContainer = styled.div`
   background: ${colors.primary};

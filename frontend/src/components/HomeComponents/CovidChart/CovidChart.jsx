@@ -7,7 +7,7 @@ import { fonts } from "../../../fonts";
 import { colors } from "../../../colors";
 import { Line } from "react-chartjs-2";
 import { Link } from "react-router-dom";
-import { axiosRequests } from "../../../utils/axiosRequests";
+import axiosRequests from "../../../utils/axiosRequests";
 import returnChartAxios from "../../../utils/returnChartAxios";
 
 const CovidChartContainer = styled.div`
@@ -50,7 +50,7 @@ const options = {
         type: "time",
         time: {
           format: "MM/DD/YY",
-          tooltipformat: "11",
+          tooltipFormat: "11",
         },
       },
     ],
