@@ -21,9 +21,9 @@ app.use("/api/user", userroutes);
 app.use("/api/userAppointment", appointmentroutes);
 app.use("/api/doctor", doctorroutes);
 app.use("/api/hospitals", hospitalroutes);
-api.use("/api/medic", medicroutes);
+app.use("/api/medic", medicroutes);
 
-dbconnection();
+dbconnection;
 
 app.listen(port, () => {
   console.log(`Port  is listening at local host ${port}`);

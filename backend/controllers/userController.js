@@ -54,7 +54,7 @@ const userLogin = async (req, res) => {
   }
 };
 
-const individualUser = asyncHandler(async (req, res) => {
+const individualUser = async (req, res) => {
   try {
     const user = await usermodel.findById(req.param.id).select("-password");
     res.status(200).json(user);
@@ -62,7 +62,7 @@ const individualUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error(error);
   }
-});
+};
 
 const updateUser = async (req, res) => {
   try {
