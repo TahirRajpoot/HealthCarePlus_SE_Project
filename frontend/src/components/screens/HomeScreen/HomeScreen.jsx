@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import NavBar from "../../Global/components/NavBar/NavBar";
 import HeroSection from "../../HomeComponents/HeroSection/HeroSection";
-import CovidChart from "../../HomeComponents/CovidChart/CovidChart";
+
 import SolutionSteps from "../../HomeComponents/SolutionSeps/SolutionSteps";
 import Advantages from "../../HomeComponents/Advantages/Advantages";
 import Specialities from "../../HomeComponents/Specialities/Specialities";
@@ -23,7 +23,6 @@ const HomeScreen = () => {
     <HomeContainer>
       <NavBar />
       <HeroSection />
-      {/* <CovidChart /> */}
       <SolutionSteps />
       <Advantages />
       <Specialities />

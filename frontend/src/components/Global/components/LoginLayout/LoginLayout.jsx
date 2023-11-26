@@ -1,6 +1,7 @@
 import React from "react";
 import { colors } from "../../../../colors";
 import GridLeftImage from "../../../../assets/images/login-grid-left.svg";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: grid;

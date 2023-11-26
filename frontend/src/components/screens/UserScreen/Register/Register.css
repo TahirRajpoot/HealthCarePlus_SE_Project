@@ -1,0 +1,47 @@
+.FormContainer {
+    padding-left: 100px;
+    margin: 120px 0;
+    max-width: 600px;
+
+}
+
+.Title {
+    font-size: 57px;
+    font-weight: 500;
+    color: #4F3928;
+    margin-bottom: 40px;
+}
+
+.ForgotPassword {
+    font-weight: 700;
+    color: #396F78;
+    font-size: 22px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.TwoColumnGroups {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    &>* {
+        flex: 1;
+    }
+}
+
+.SubmitButton {
+    margin-top: 10px;
+    width: 200px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.InputGroup {
+    margin-bottom: 30px;
+}
+
+.Error {
+    margin-top: 5px;
+    color: #FF9494
+}
