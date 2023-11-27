@@ -45,14 +45,14 @@ const loginHospital = async (req, res) => {
 
     const existingHospital = await hospitalmodel.findOne({ email });
 
-    if (existingHospital && (await existingHospital.matchPassword(password))) {
-      return res.status(200).json(existingHospital);
-    } else {
+    if (!existingHospital) {
       return res.status(404).json({ message: "Invalid credentials" });
     }
+
+    res.status(200).json(existingHospital);
   } catch (error) {
     console.error("Error in loginHospital:", error);
-    res.status(505).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
