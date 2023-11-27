@@ -12,6 +12,7 @@ import LoginOptions from "./components/screens/LoginOptions/LoginOptions";
 import Login from "./components/screens/UserScreen/Login/Login";
 import HospitalRegister from "./components/screens/HospitalScreen/HospitalRegister";
 import HospitalLogin from "./components/screens/HospitalScreen/HosptalLogin";
+import DoctorRegister from "./components/screens/DoctorScreen/DoctorRegister";
 
 const AppContainer = styled.div`
   max-width: 1800px;
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/user_login" element={<Login />} />
           <Route path="/hospital_register" element={<HospitalRegister />} />
           <Route path="/hospital_login" element={<HospitalLogin />} />
+          <Route path="/doctor_register" element={<DoctorRegister />} />
         </Routes>
       </Router>
     </AppContainer>
