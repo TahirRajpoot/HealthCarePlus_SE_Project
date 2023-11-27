@@ -21,6 +21,7 @@ const userRegister = async (req, res) => {
       email: user.email,
       dob: user.dob,
       contacts: user.contacts,
+      password: user.password,
     });
   } catch (error) {
     res.status(505).json({ message: "Internal Server Error" });

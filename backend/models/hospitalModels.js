@@ -8,7 +8,6 @@ const hospitalSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
     },
     contact1: {
       type: String,

@@ -1,25 +1,3 @@
-// import React from "react";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./components/Home/Home";
-// import Login from "./components/Login/Login";
-// import "../src/css/App.css";
-// // import "../src/components/Login/Login.css";
-// import Register from "./components/SignUp/Register";
-
-// const App = () => {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" exact element={<Home />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/signup" element={<Register />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// };
-
-// export default App;
-
 import React from "react";
 import "./Apps.css";
 import { useSelector } from "react-redux";
@@ -29,8 +7,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import Covid from "./components/screens/Covid/Covid";
 import Doctor from "./components/screens/Doctor/Doctor";
-import LoginScreen from "./components/screens/UserScreen/Register/Register";
+import Register from "./components/screens/UserScreen/Register/Register";
 import LoginOptions from "./components/screens/LoginOptions/LoginOptions";
+import Login from "./components/screens/UserScreen/Login/Login";
+import HospitalRegister from "./components/screens/HospitalScreen/HospitalRegister";
 
 const AppContainer = styled.div`
   max-width: 1800px;
@@ -53,7 +33,9 @@ const App = () => {
           <Route path="/covid19" element={<Covid />} />
           <Route path="/doctors" element={<Doctor />} />
           <Route path="/login_options" element={<LoginOptions />} />
-          <Route path="/user_register" element={<LoginScreen />} />
+          <Route path="/user_register" element={<Register />} />
+          <Route path="/user_login" element={<Login />} />
+          <Route path="/hospital_register" element={<HospitalRegister />} />
         </Routes>
       </Router>
     </AppContainer>

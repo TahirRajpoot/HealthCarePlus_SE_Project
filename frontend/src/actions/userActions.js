@@ -13,10 +13,13 @@ export const userLoginAction =
   (email, password) => async (dispatch, getState) => {
     try {
       dispatch({ type: USER_LOGIN_REQUEST });
-      const { data } = await axios.post("http://localhost:8080/api/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        "http://localhost:8080/api/user/login",
+        {
+          email,
+          password,
+        }
+      );
       console.log(data);
 
       dispatch({
@@ -47,13 +50,16 @@ export const userRegisterAction =
         type: USER_REGISTER_REQUEST,
       });
 
-      const { data } = await axios.post("http://localhost:8080/api/register", {
-        name,
-        email,
-        password,
-        dob,
-        contacts,
-      });
+      const { data } = await axios.post(
+        "http://localhost:8080/api/user/register",
+        {
+          name,
+          email,
+          password,
+          dob,
+          contacts,
+        }
+      );
       console.log(data);
       dispatch({
         type: USER_REGISTER_SUCCESS,

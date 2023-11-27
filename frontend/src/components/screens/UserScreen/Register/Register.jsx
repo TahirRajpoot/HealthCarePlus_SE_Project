@@ -9,14 +9,15 @@ import { userRegisterAction } from "../../../../actions/userActions";
 import { useForm } from "react-hook-form";
 import "./Register.css";
 
-const LoginScreen = () => {
+const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     const {
       username,
@@ -25,8 +26,9 @@ const LoginScreen = () => {
       userpassword,
       userprimarycontact,
     } = data;
+
     try {
-      dispatch(
+      await dispatch(
         userRegisterAction(
           username,
           useremail,
@@ -35,9 +37,9 @@ const LoginScreen = () => {
           userpassword
         )
       );
-      history.push("/user_login");
+      navigate("/user_login");
     } catch (error) {
-      alert("Error");
+      console.error("Registration failed:", error);
     }
   };
 
@@ -45,7 +47,7 @@ const LoginScreen = () => {
     <LoginLayout>
       <div className="FormContainer">
         <h2 className="Title">Client Register</h2>
-        <form onSubmit="">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="InputGroup">
             <Label htmlFor="username">Name</Label>
             <Input
@@ -160,7 +162,11 @@ const LoginScreen = () => {
               </div>
             )}
           </div>
-          <Button className="SubmitButton" type="submit" disabled="">
+          <Button
+            className="SubmitButton"
+            type="submit"
+            disabled={isSubmitting}
+          >
             Submit
           </Button>
         </form>
@@ -169,4 +175,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default Register;
