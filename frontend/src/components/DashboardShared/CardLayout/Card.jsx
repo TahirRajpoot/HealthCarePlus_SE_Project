@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { colors } from "../../../colors";
 
 const CardContainer = styled.div`
   padding: 20px 0 40px;

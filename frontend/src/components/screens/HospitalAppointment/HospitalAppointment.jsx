@@ -8,7 +8,7 @@ import ApprovedAppointments from "../../ApprovedAppointments/ApprovedAppointment
 const HospitalAppointment = () => {
   const { hospitalMenuData } = useGetHospitalData();
   return (
-    <DashBoardLayout menuData={hospitalMenuData}>
+    <DashBoardLayout>
       <DashBoardContentWrapper>
         <PendingAppointments />
         <ApprovedAppointments />

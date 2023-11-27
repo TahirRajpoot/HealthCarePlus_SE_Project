@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Apps.css";
-import { useSelector } from "react-redux";
 import HomeScreen from "./components/screens/HomeScreen/HomeScreen";
 import About from "./components/screens/About/About";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -14,6 +13,8 @@ import HospitalRegister from "./components/screens/HospitalScreen/HospitalRegist
 import HospitalLogin from "./components/screens/HospitalScreen/HosptalLogin";
 import DoctorRegister from "./components/screens/DoctorScreen/DoctorRegister";
 import DoctorLogin from "./components/screens/DoctorScreen/DoctorLogin";
+import UserDashBoard from "./components/screens/UserDashBoard/UserDashBaord";
+import ProtectedRoute from "./components/Global/components/ProtectedRoutes/ProtectRoute";
 
 const AppContainer = styled.div`
   max-width: 1800px;
@@ -21,11 +22,8 @@ const AppContainer = styled.div`
 `;
 
 const App = () => {
-  const userId = useSelector((state) => state.userLogin)?.userInfo?._id;
-  const hospitalId = useSelector((state) => state.hospitalLogin)?.hospitalInfo
-    ?._id;
-
-  console.log(userId);
+  const [userId, setUserId] = useState(null);
+  const [hospitalId, setHospitalId] = useState(null);
 
   return (
     <AppContainer>
@@ -42,6 +40,7 @@ const App = () => {
           <Route path="/hospital_login" element={<HospitalLogin />} />
           <Route path="/doctor_register" element={<DoctorRegister />} />
           <Route path="/doctor_login" element={<DoctorLogin />} />
+          <Route exact path="/user_dashboard" element={<UserDashBoard />} />
         </Routes>
       </Router>
     </AppContainer>

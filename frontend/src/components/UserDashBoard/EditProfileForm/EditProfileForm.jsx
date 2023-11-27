@@ -28,35 +28,6 @@ const Error = styled.div`
 `;
 
 const EditProfileForm = ({ open, setOpen }) => {
-  const [userDescription, setuserDescription] = useState("");
-
-  const dispatch = useDispatch();
-  console.log(dispatch);
-  const userLogin = useSelector((state) => {
-    return state.userLogin;
-  });
-
-  let responseObject = { ...userLogin.userInfo };
-
-  console.log(responseObject);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      name: responseObject.name,
-      dob: responseObject.dob,
-      contactNumber: responseObject.contacts,
-      email: responseObject.email,
-    },
-  });
-
-  const onSubmit = async (data) => {
-    console.log(data);
-    //await dispatch(updateuserDescription(id, userDescription))
-  };
-
   return (
     <Modal setOpen={setOpen} open={open}>
       <ModalTitle>Edit User Profile</ModalTitle>
@@ -71,48 +42,21 @@ const EditProfileForm = ({ open, setOpen }) => {
               {...register("name", { required: "This field is required" })}
               fluid
             />
-            <Error>{errors?.name?.message}</Error>
           </InputGroup>
           <InputGroup>
             <Label htmlFor="userEmail">Email</Label>
-            <Input
-              type="email"
-              id="userEmail"
-              {...register("email")}
-              fluid
-              disabled
-            />
+            <Input type="email" id="userEmail" fluid disabled />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="userDOB">Date Of Birth</Label>
-            <Input
-              error={errors.dob ? true : false}
-              type="date"
-              id="userDOB"
-              fluid
-              {...register("dob", { required: "This field is required" })}
-            />
-            <Error>{errors?.dob?.message}</Error>
+            <Input />
           </InputGroup>
           <InputGroup>
             <Label htmlFor="userContact">Primary Number</Label>
-            <Input
-              type="number"
-              id="userContact"
-              error={errors.contactNumber ? true : false}
-              fluid
-              {...register("contactNumber", {
-                minLength: {
-                  value: 8,
-                  message: "Phone number should be atleast 8 characters long",
-                },
-                required: "This field is required",
-              })}
-            />
-            <Error>{errors?.contactNumber?.message}</Error>
+            <Input type="number" id="userContact" />
           </InputGroup>
         </ModalBody>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled="">
           Update
         </Button>
       </ModalForm>

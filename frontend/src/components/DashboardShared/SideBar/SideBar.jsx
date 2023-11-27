@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../colors";
 import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { hospitalLogOutAction } from "../../../actions/hospitalActions";
-import { userLogOutAction } from "../../../actions/userActions";
+
+import LogoutIcon from "../../../assets/images/logout.svg";
+import { useNavigate } from "react-router";
 
 const StyledNavLink = styled(NavLink)`
   display: flex;
@@ -41,24 +41,25 @@ const SidebarContainer = styled.div`
 `;
 
 function SideBar({ sidebarData }) {
+  const history = useNavigate();
   const params = useParams();
-  const dispatch = useDispatch();
-  const hospitalLogin = useSelector((state) => state.hospitalLogin);
-  const userLogin = useSelector((state) => state.userLogin);
 
-  const handleLogOut = async () => {
-    if (params.id === hospitalLogin.hospitalInfo?._id) {
-      dispatch(hospitalLogOutAction());
-      return;
+  const handleLogout = () => {
+    if (params.id) {
+      // Replace the following conditions with your logic for different user types
+      if (params.id.startsWith("hospital")) {
+        // Handle hospital logout
+        console.log("Hospital Logout");
+      } else {
+        // Handle user logout
+        console.log("User Logout");
+      }
     }
 
-    if (params.id === userLogin.userInfo?._id) {
-      dispatch(userLogOutAction());
-      return;
-    }
+    // Redirect to login_options after logout
+    history("/login_options");
   };
 
-  console.log({ sidebarData, params });
   return (
     <SidebarContainer>
       {sidebarData
@@ -71,7 +72,7 @@ function SideBar({ sidebarData }) {
             </StyledNavLink>
           ))
         : null}
-      <StyledNavLink to="/login_options" onClick={handleLogOut}>
+      <StyledNavLink to="/login_options" onClick={handleLogout}>
         <ImageContainer>
           <img src={LogoutIcon} alt={"Logout"} />
         </ImageContainer>

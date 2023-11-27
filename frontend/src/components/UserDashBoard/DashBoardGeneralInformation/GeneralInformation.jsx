@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { colors } from "../../../colors";
 import { fonts } from "../../../fonts";
-import { useSelector } from "react-redux";
 import Card from "../../DashboardShared/CardLayout/Card";
 import EditProfileForm from "../EditProfileForm/EditProfileForm";
 import EditButton from "../../../assets/images/edit.svg";
@@ -18,6 +17,7 @@ const CardHeader = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const CardBody = styled.div`
   padding: 0 50px;
   display: flex;
@@ -34,6 +34,7 @@ const IconButton = styled.button`
   display: grid;
   place-content: center;
 `;
+
 const Line = styled.div`
   margin: 30px 0;
   height: 1px;
@@ -64,7 +65,7 @@ const CardBodyLeft = styled.div``;
 
 const GeneralInformation = () => {
   const [open, setOpen] = useState(false);
-  const userLogin = useSelector((state) => state.userLogin);
+
   const userInfo = {
     name: "Usman",
     email: "aa@aa.com",
@@ -77,7 +78,7 @@ const GeneralInformation = () => {
     console.log(open);
   }, [open]);
 
-  const { _id, name, email, dob, contacts } = userLogin.userInfo;
+  const { _id, name, email, dob, contacts } = userInfo;
   return (
     <Card>
       <CardHeader>

@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 function UserAppointments() {
   return (
@@ -54,15 +53,6 @@ function UserAppointments() {
               <td class="p-3 px-5 flex justify-end">
                 <button
                   type="button"
-                  onClick={async () => {
-                    try {
-                      await axios.put(
-                        `${local}/userAppointment/${res?._id}/rejected`
-                      );
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
                   class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                 >
                   Reject

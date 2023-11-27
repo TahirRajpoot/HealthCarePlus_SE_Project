@@ -18,10 +18,10 @@ const FlexLeft = styled.div`
 const DashBoardLayout = ({ type, id, menuData, children }) => {
   return (
     <div>
-      <Navbar type={type} id={id} />
+      <NavBar type={type} id={id} />
       <FlexContainer>
         <FlexLeft>
-          <Sidebar sidebarData={menuData} />
+          <SideBar sidebarData={menuData} />
         </FlexLeft>
         <FlexRight>{children}</FlexRight>
       </FlexContainer>

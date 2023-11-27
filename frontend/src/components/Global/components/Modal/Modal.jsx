@@ -1,10 +1,10 @@
 import React from "react";
-import { colors } from "colors";
+import { colors } from "../../../../colors";
 import Modal from "react-modal";
 import styled from "styled-components";
 import CrossIcon from "../../../../assets/images/cross-icon.svg";
 
-Modal.setAppElement("#modal");
+// Modal.setAppElement("#modal");
 
 const customStyles = {
   content: {

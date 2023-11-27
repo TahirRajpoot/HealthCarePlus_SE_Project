@@ -6,14 +6,9 @@ import Emergency from "../assets/images/dashboarsIcons/emergency.svg";
 import BloodBank from "../assets/images/dashboarsIcons/blood-bank.svg";
 import Hospital from "../assets/images/dashboarsIcons/hospital.svg";
 import Medics from "../assets/images/dashboarsIcons/medicines.svg";
-import { useSelector } from "react-redux";
 
-const useGetHospitalData = () => {
-  const hospitalLogin = useSelector((state) => {
-    return state.hospitalLogin;
-  });
-
-  let responseObject = { ...hospitalLogin.hospitalInfo };
+const useGetHospitalData = (hospitalInfo) => {
+  let responseObject = { ...hospitalInfo };
   let hospitalId = responseObject._id;
 
   return {

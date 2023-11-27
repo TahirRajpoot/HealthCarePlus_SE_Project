@@ -22,31 +22,26 @@ const Container = styled.div`
 
 const HospitalProfile = () => {
   return (
-    <DashBoardLayout type={"hospital"} menuData={userMenuData}>
+    <DashBoardLayout>
       <DashBoardContentWrapper>
         <GoBackButtonContainer>
-          <Link to={`/${id}/userDashboard/hospitals/`}>
+          <Link to="">
             <GoBackButton>Go Back to Hospitals Page</GoBackButton>
           </Link>
         </GoBackButtonContainer>
-        {error && <div>Error Loading Data</div>}
-        {loading && <div>Loading Data...</div>}
-        {hospitalData && (
-          <>
-            <Container>
-              <HospitalDescriptionPublic hospitalData={hospitalData} />
-            </Container>
-            <Container>
-              <HospitalEventsPublic hospitalData={hospitalData} />
-            </Container>
-            <Container>
-              <HospitalServicesPublic hospitalData={hospitalData} />
-            </Container>
-            <Container>
-              <HospitalDoctorsPublic hospitalData={hospitalData} />
-            </Container>
-          </>
-        )}
+
+        <Container>
+          <HospitalDescriptionPublic hospitalData="" />
+        </Container>
+        <Container>
+          <HospitalEventsPublic hospitalData="" />
+        </Container>
+        <Container>
+          <HospitalServicesPublic hospitalData="" />
+        </Container>
+        <Container>
+          <HospitalDoctorsPublic hospitalData="" />
+        </Container>
       </DashBoardContentWrapper>
     </DashBoardLayout>
   );
