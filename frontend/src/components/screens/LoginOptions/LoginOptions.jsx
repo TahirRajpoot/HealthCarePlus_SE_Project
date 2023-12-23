@@ -13,34 +13,24 @@ const LoginOptions = () => {
       <div className="right">
         <h2 className="supertitle">Choose suitable Account option</h2>
         <div className="login-register-container">
-          <div className="title">Client Account </div>
+          <div className="title">Admin Account </div>
           <Link to="/user_register">
             <Button className="noradiusbutton" outlined>
-              Register As Client
+              Register As Admin
             </Button>
           </Link>
 
           <Link to="/user_login">
             <Button className="noradiusbutton" outlined>
-              Login as client{" "}
+              Login as Admin{" "}
             </Button>
           </Link>
         </div>
         <div className="login-register-container">
           <div className="title">Hospital Account</div>
-          <Link to="/hospital_register">
-            <Button className="noradiusbutton" outlined>
-              Register as Hospital{" "}
-            </Button>
-          </Link>
           <Link to="/hospital_login">
             <Button className="noradiusbutton" outlined>
               Hospital Login{" "}
-            </Button>
-          </Link>
-          <Link to="/doctor_register">
-            <Button className="noradiusbutton" outlined>
-              Register As Doctor
             </Button>
           </Link>
           <Link to="/doctor_login">

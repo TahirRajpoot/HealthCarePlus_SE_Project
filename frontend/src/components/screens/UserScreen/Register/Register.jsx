@@ -1,154 +1,186 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import styles from "./Register.module.css";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../Global/components/Button/Button";
-import Input from "../../../Global/components/Input/Input";
-import Label from "../../../Global/components/Label/Label";
-import LoginLayout from "../../../Global/components/LoginLayout/LoginLayout";
-import "./Register.css";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const Register = () => {
+function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    username: "",
-    useremail: "",
-    userDateOfBirth: "",
-    userpassword: "",
-    userprimarycontact: "",
-  });
-  const [errors, setErrors] = useState({});
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // USE STATE HOOK
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [userType, setUserType] = useState("");
+  const [passwordMatchDisplay, setPasswordMatchDisplay] = useState("none");
+  const [passwordValidationMessage, setPasswordValidationMessage] =
+    useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await axios.post("http://localhost:8080/api/user/register", {
-        name: formData.username,
-        email: formData.useremail,
-        dob: formData.userDateOfBirth,
-        contacts: formData.userprimarycontact,
-        password: formData.userpassword,
-      });
-      alert("User registered successfully:");
-      console.log(data);
-      navigate("/user_login");
-    } catch (err) {
-      const errorMessage =
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message;
-      setErrors({ registration: errorMessage });
-    } finally {
-      setIsSubmitting(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let user = {
+      firstName,
+      lastName,
+      email,
+      username,
+      password,
+      userType,
+    };
+
+    // Attach Frontend With Backend Fetching Data using axios
+    const response = await axios.post(
+      "http://localhost:8080/api/register",
+      user
+    );
+    if (response.status === 200) {
+      toast.success("User Added");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setUserType("");
+      setUsername("");
+      navigate("/");
     }
   };
 
+  useEffect(() => {
+    if (password.length > 0 && password?.trim()?.length <= 6) {
+      setPasswordValidationMessage(
+        "Password Length must be greater than 6 characters"
+      );
+    } else {
+      setPasswordValidationMessage("");
+    }
+  }, [password]);
+
   return (
-    <LoginLayout>
-      <div className="FormContainer">
-        <h2 className="Title">Client Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="InputGroup">
-            <Label htmlFor="username">Name</Label>
-            <Input
-              fluid
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            {errors.username && (
-              <div className="Error" role="alert">
-                {errors.username.message}
-              </div>
-            )}
+    <div id={styles.signUpBody}>
+      <div id={styles.signUpBG}>
+        <div className={styles.greenLayer}></div>
+      </div>
+      <div>
+        <h2>Create An Account</h2>
+        <form className={styles.signUpform} onSubmit={handleSubmit}>
+          <div className="d-flex flex-column flex-lg-row flex-sm-column mt-5">
+            <div className="col-12 col-sm-12 col-lg-6  form-floating mx-2 ">
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                className="form-control"
+                placeholder="first name"
+                value={firstName}
+                required
+                onChange={(event) => setFirstName(event.target.value)}
+              />
+              <label htmlFor="firstName">First Name</label>
+            </div>
+            <div className="col-12  col-sm-12 col-lg-6  mt-3 mt-sm-3 mt-lg-0 form-floating mx-2">
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                className="form-control"
+                placeholder="last name"
+                value={lastName}
+                required
+                onChange={(event) => setLastName(event.target.value)}
+              />
+              <label htmlFor="lastName">Last Name</label>
+            </div>
           </div>
-          <div className="InputGroup">
-            <Label htmlFor="useremail">Email</Label>
-            <Input
-              fluid
+
+          <div className="form-floating mt-3 col-12 mx-2">
+            <input
               type="email"
-              id="useremail"
-              name="useremail"
-              value={formData.useremail}
-              onChange={handleChange}
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+              className="form-control"
             />
-            {errors.useremail && (
-              <div className="Error" role="alert">
-                {errors.useremail.message}
-              </div>
-            )}
+            <label htmlFor="email">Email</label>
           </div>
-          <div className="TwoColumnGroups">
-            <div className="InputGroup">
-              <Label htmlFor="userprimarycontact">Primary Contact</Label>
-              <Input
-                fluid
-                type="number"
-                id="userprimarycontact"
-                name="userprimarycontact"
-                value={formData.userprimarycontact}
-                onChange={handleChange}
-              />
-              {errors.userprimarycontact && (
-                <div className="Error" role="alert">
-                  {errors.userprimarycontact.message}
-                </div>
-              )}
-            </div>
-            <div className="InputGroup">
-              <Label htmlFor="userDateOfBirth">Date Of Birth</Label>
-              <Input
-                fluid
-                type="date"
-                id="userDateOfBirth"
-                name="userDateOfBirth"
-                value={formData.userDateOfBirth}
-                onChange={handleChange}
-              />
-              {errors.userDateOfBirth && (
-                <div className="Error" role="alert">
-                  {errors.userDateOfBirth.message}
-                </div>
-              )}
-            </div>
+          <div className="col-12 col-sm-12 col-lg-6  form-floating mx-2 ">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              className="form-control"
+              placeholder="username"
+              value={username}
+              required
+              onChange={(event) => setUsername(event.target.value)}
+            />
+            <label htmlFor="username">Username</label>
           </div>
-          <div className="InputGroup">
-            <Label htmlFor="userpassword">Password</Label>
-            <Input
-              fluid
+          <div className="form-floating mt-3 col-12 mx-2">
+            <input
               type="password"
-              id="userpassword"
-              name="userpassword"
-              value={formData.userpassword}
-              onChange={handleChange}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="form-control"
+              required
+              placeholder="password"
             />
-            {errors.userpassword && (
-              <div className="Error" role="alert">
-                {errors.userpassword.message}
-              </div>
-            )}
+            <label htmlFor="password">Password</label>
           </div>
-          <Button
-            className="SubmitButton"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Submit
-          </Button>
+          <div className="mx-2 text-danger"> {passwordValidationMessage}</div>
+
+          <div className="form-floating mt-3 col-12 mx-2">
+            <select
+              id="userType"
+              name="userType"
+              value={userType}
+              onChange={(event) => setUserType(event.target.value)}
+              className="form-select"
+              required
+            >
+              <option value=""></option>
+              <option value="Patient">Patient</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <label htmlFor="userType">User Type</label>
+          </div>
+
+          <div className="form-group form-check mt-5 mx-2">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="terms-chkbox"
+              required
+            />
+            <label className="" htmlFor="terms-chkbox">
+              I agree with the terms and conditons
+            </label>
+          </div>
+          <div className="text-center">
+            <button id={styles.signUpBtn} type="submit">
+              Sign Up
+            </button>
+          </div>
+          <div className="text-center">
+            Already have an account?{" "}
+            <NavLink to="/login" exact>
+              Sign In
+            </NavLink>
+          </div>
         </form>
       </div>
-    </LoginLayout>
+    </div>
   );
-};
+}
 
 export default Register;
