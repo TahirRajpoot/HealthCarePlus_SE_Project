@@ -1,57 +1,84 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+var uniqueValidator = require("mongoose-unique-validator");
 
+//User Schema
 const UserSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
+      required: [true, "Please provide email"],
+      unique: true,
+    },
+    username: {
+      type: String,
+      required: [true, "Please provide username"],
       unique: true,
     },
     password: {
       type: String,
-      unique: true,
+      required: [true, "Please provide password"],
     },
-    dob: {
-      type: String,
-    },
-    age: {
-      type: Number,
-    },
-    contacts: {
-      type: Number,
-    },
-    appointmentsmade: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Appointments",
-    },
-
-    isDisabled: {
+    activated: {
       type: Boolean,
+      default: false,
     },
-    medicines: [
-      {
-        desc: String,
-        disease: String,
-        date1: [Date],
-      },
-    ],
-    report: [
-      {
-        type: String,
-        img: String,
-        desc: String,
-        title: String,
-        date: Date.now,
-      },
-    ],
-    reports: {
+    verificationToken: {
+      token: { type: String },
+      expires: { type: Date },
+    },
+    firstName: {
       type: String,
+      required: [true, "Please provide first name"],
+    },
+    lastName: {
+      type: String,
+      required: [true, "Please provide last name"],
+    },
+    userType: {
+      type: String,
+      required: true,
+      enum: ["Admin", "Patient", "Doctor"],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-module.exports = mongoose.model("Users", UserSchema);
+UserSchema.plugin(uniqueValidator, { message: "{PATH} must be unique" });
+
+// Hashing password
+UserSchema.pre("save", async function (next) {
+  try {
+    const user = this;
+    if (!user.isModified("password")) {
+      return next();
+    }
+    const hash = await bcrypt.hash(user.password, 10);
+    user.password = hash;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// Hashing password before Updating
+UserSchema.pre("updateOne", async function (next) {
+  try {
+    const password = this.getUpdate().$set.password;
+
+    if (!password) {
+      return next();
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+    this.getUpdate().$set.password = hash;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+const User = mongoose.model("User", UserSchema);
+
+module.exports = User;

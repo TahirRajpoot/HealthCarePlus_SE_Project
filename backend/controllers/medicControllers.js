@@ -1,58 +1,107 @@
-const medicmodel = require("../models/medicModels");
+const Medicine = require("../models/medicModels");
 
-const addMedicine = async (req, res) => {
+const getMedicines = async (req, res) => {
   try {
-    const { name, weight, cost, field, aka, details } = req.body;
-    const image = `https://www.nepmeds.com.np/frontend/images/medicine-default-rx.png`;
-    const by = "Health Care Plus";
+    var name = req.query.name;
 
-    if (!name || !weight || !cost || !field) {
-      return res.status(400).json({ message: "Every field is required" });
+    let medicines = [];
+    if (!name) {
+      medicines = await Medicine.find({});
+    } else {
+      medicines = await Medicine.find({ name: name });
     }
 
-    const medicine = await new medicmodel({
-      name,
-      aka,
-      weight,
-      cost,
-      field,
-      image,
-      details,
-      by,
+    res.json(medicines);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getMedicineById = async (req, res) => {
+  try {
+    const medicine = await Medicine.findById(req.params.id);
+    res.json(medicine);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+const isMedicineValid = (newmedicine) => {
+  let errorList = [];
+  if (!newmedicine.company) {
+    errorList[errorList.length] = "Please enter company name";
+  }
+  if (!newmedicine.name) {
+    errorList[errorList.length] = "Please enter medicine name";
+  }
+  if (!newmedicine.description) {
+    errorList[errorList.length] = "Please enter medicine description";
+  }
+  if (!newmedicine.price) {
+    errorList[errorList.length] = "Please enter medicine cost";
+  }
+
+  if (errorList.length > 0) {
+    result = {
+      status: false,
+      errors: errorList,
+    };
+    return result;
+  } else {
+    return { status: true };
+  }
+};
+
+const saveMedicine = async (req, res) => {
+  let newmedicine = req.body;
+  let medicineValidStatus = isMedicineValid(newmedicine);
+  if (!medicineValidStatus.status) {
+    res.status(400).json({
+      message: "error",
+      errors: medicineValidStatus.errors,
     });
-    const medicines = medicine.save();
-    res.status(200).json(medicines);
-  } catch (error) {
-    console.error("Error in addMedicine:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-const getAllMedicine = async (req, res) => {
-  try {
-    const medicines = await medicmodel.find();
-    res.status(200).json(medicines);
-  } catch (error) {
-    console.error("Error in getAllMedicine:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-const individualMedicine = async (req, res) => {
-  try {
-    const medicine = await medicmodel.findById(req.params.id);
-    if (!medicine) {
-      return res.status(404).json({ message: "Medicine not found" });
+  } else {
+    const medicine = new Medicine(req.body);
+    try {
+      const savedMedicine = await medicine.save();
+      res.status(200).json({ message: "success" });
+    } catch (error) {
+      res.status(400).json({ message: "error", errors: [error.message] });
     }
-    res.status(200).json(medicine);
+  }
+};
+
+const updateMedicine = async (req, res) => {
+  let newmedicine = req.body;
+  let medicineValidStatus = isMedicineValid(newmedicine);
+  if (!medicineValidStatus.status) {
+    res.status(400).json({
+      message: "error",
+      errors: medicineValidStatus.errors,
+    });
+  } else {
+    try {
+      await Medicine.updateOne({ _id: req.params.id }, { $set: req.body });
+      res.status(200).json({ message: "success" });
+    } catch (error) {
+      res.status(400).json({ message: "error", errors: [error.message] });
+    }
+  }
+};
+
+const deleteMedicine = async (req, res) => {
+  try {
+    const deletedmedicine = await Medicine.deleteOne({ _id: req.params.id });
+    res.status(200).json(deletedmedicine);
   } catch (error) {
-    console.error("Error in individualMedicine:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(400).json({ message: error.message });
   }
 };
 
 module.exports = {
-  getAllMedicine,
-  addMedicine,
-  individualMedicine,
+  getMedicines,
+  getMedicineById,
+  saveMedicine,
+  updateMedicine,
+  deleteMedicine,
 };

@@ -1,84 +1,167 @@
-const usermodel = require("../models/userModels");
-const bcrypt = require("bcryptjs");
+const User = require("../models/userModels");
+const Patient = require("../models/patientModels");
+const Doctor = require("../models/doctorModels");
 
-const userRegister = async (req, res) => {
+//Get User by Id
+const getUserById = async (req, res) => {
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-    const newUser = new usermodel({
-      name: req.body.name,
-      email: req.body.email,
-      dob: req.body.dob,
-      contacts: req.body.contacts,
-      password: hashPassword,
-    });
-
-    const user = await newUser.save();
-    res.status(200).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      dob: user.dob,
-      contacts: user.contacts,
-      password: user.password,
-    });
+    const user = await User.findById(req.params.id);
+    res.json(user);
   } catch (error) {
-    res.status(505).json({ message: "Internal Server Error" });
+    res.status(404).json({ message: error.message });
   }
 };
 
-const userLogin = async (req, res) => {
+// Validation
+const isUserValid = (newUser) => {
+  let errorList = [];
+  if (!newUser.firstName) {
+    errorList.push("Please enter first name");
+  }
+  if (!newUser.lastName) {
+    errorList.push("Please enter last name");
+  }
+  if (!newUser.email) {
+    errorList.push("Please enter email");
+  }
+  if (!newUser.password) {
+    errorList.push("Please enter password");
+  }
+
+  if (!newUser.userType) {
+    errorList.push("Please enter User Type");
+  }
+
+  if (errorList.length > 0) {
+    return {
+      status: false,
+      errors: errorList,
+    };
+  } else {
+    return { status: true };
+  }
+};
+
+// Add User to Database
+const saveUser = async (req, res) => {
+  let newUser = req.body;
+  let userValidStatus = isUserValid(newUser);
+  if (!userValidStatus.status) {
+    res.status(400).json({
+      message: "error",
+      errors: userValidStatus.errors,
+    });
+  } else {
+    try {
+      const userDetails = await User.create({
+        email: newUser.email,
+        username: newUser.username,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        password: newUser.password,
+        userType: newUser.userType,
+        activated: true,
+      });
+
+      if (newUser.userType === "Doctor") {
+        await Doctor.create({
+          userId: userDetails._id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        });
+      }
+
+      if (newUser.userType === "Patient") {
+        await Patient.create({
+          userId: userDetails._id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+        });
+      }
+
+      res.status(200).json({ message: "success" });
+    } catch (error) {
+      res.status(400).json({ message: "error", errors: [error.message] });
+    }
+  }
+};
+//Get User
+const getUsers = async (req, res) => {
   try {
-    const user = await usermodel.findOne({ email: req.body.email });
-    if (!user) {
-      res.status(404).json({ message: "Invalid Credientials" });
+    var name = req.query.name;
+    var role = req.query.role;
+
+    let conditions = [];
+
+    if (name) {
+      conditions.push({ firstName: name });
+      conditions.push({ lastName: name });
     }
 
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
-    if (!validPassword) {
-      res.status(404).json({ message: "Invalid Credientials" });
+    if (role) {
+      conditions.push({ userType: role });
     }
 
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      dob: user.dob,
-      contacts: user.contacts,
-    });
+    let users = [];
+    if (conditions.length === 0) {
+      users = await User.find({});
+    } else {
+      console.log(conditions);
+
+      users = await User.find({
+        $or: conditions,
+      });
+    }
+
+    res.json(users);
   } catch (error) {
-    res.status(404).json({ message: "Invalid Credientials" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-const individualUser = async (req, res) => {
-  try {
-    const user = await usermodel.findById(req.param.id).select("-password");
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400);
-    throw new Error(error);
-  }
-};
-
+// Update User
 const updateUser = async (req, res) => {
-  try {
-    const users = await usermodel.findByIdAndUpdate(req.params.id, {
-      $set: req.body,
+  let newUser = req.body;
+  let userValidStatus = isUserValid(newUser);
+  if (!userValidStatus.status) {
+    res.status(400).json({
+      message: "error",
+      errors: userValidStatus.errors,
     });
-    res.status(200).json({ users });
+  } else {
+    try {
+      await User.updateOne({ _id: req.params.id }, { $set: req.body });
+      res.status(200).json({ message: "success" });
+    } catch (error) {
+      res.status(400).json({ message: "error", errors: [error.message] });
+    }
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (user.userType === "Doctor") {
+      await Doctor.deleteOne({ userId: req.params.id });
+    }
+
+    if (user.userType === "Patient") {
+      await Patient.deleteOne({ userId: req.params.id });
+    }
+
+    const deletedUser = await User.deleteOne({ _id: req.params.id });
+    res.status(200).json(deletedUser);
   } catch (error) {
-    res.status(505).json(Error);
+    res.status(400).json({ message: error.message });
   }
 };
 
 module.exports = {
-  userRegister,
-  userLogin,
+  getUsers,
+  getUserById,
+  saveUser,
   updateUser,
-  individualUser,
+  deleteUser,
 };

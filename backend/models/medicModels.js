@@ -1,36 +1,30 @@
 const mongoose = require("mongoose");
 
-const medicSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+// Medicine Schema
+const MedicineSchema = new mongoose.Schema(
+  {
+    company: {
+      type: String,
+      required: [true, "Please provide company"],
+    },
+    name: {
+      type: String,
+      required: [true, "Please provide name"],
+    },
+    description: {
+      type: String,
+      required: [true, "Please provide description"],
+    },
+    price: {
+      type: Number,
+      required: [true, "Please provide medicine cost"],
+    },
   },
-  aka: {
-    type: String,
-    default: "",
-  },
-  weight: {
-    type: String,
-    required: true,
-  },
-  cost: {
-    type: Number,
-    required: true,
-  },
-  field: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-  },
-  details: {
-    type: String,
-    required: true,
-  },
-  by: {
-    type: String,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model("Medic", medicSchema);
+const Medicine = mongoose.model("Medicine", MedicineSchema);
+
+module.exports = Medicine;

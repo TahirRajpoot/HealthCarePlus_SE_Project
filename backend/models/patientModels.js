@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 
-// Doctor Schema
-const DoctorSchema = new mongoose.Schema({
+// Patient Schema
+const PatientSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -10,14 +11,17 @@ const DoctorSchema = new mongoose.Schema({
   phone: {
     type: String,
   },
-  department: {
+  address: {
     type: String,
   },
-  address: {
+  gender: {
+    type: String,
+  },
+  dob: {
     type: String,
   },
 });
 
-const Doctor = mongoose.model("Doctor", DoctorSchema);
+const Patient = mongoose.model("Patient", PatientSchema);
 
-module.exports = Doctor;
+module.exports = Patient;

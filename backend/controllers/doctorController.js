@@ -1,104 +1,145 @@
-const doctormodel = require("../models/doctorModels");
-const hospitalmodel = require("../models/hospitalModels");
-const bcrypt = require("bcryptjs");
+const Doctor = require("../models/doctorModels");
+const User = require("../models/userModels");
 
-const doctorRegister = async (req, res) => {
+//Get Doctor By Id
+const getDoctorById = async (req, res) => {
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashpassword = await bcrypt.hash(req.body.password, salt);
-    const existDoctor = await doctormodel.findOne({ email: req.body.email });
-    if (existDoctor) {
-      res.status(404).json({ message: "Doctor Already Exists" });
-    }
-
-    const newDoctor = new doctormodel({
-      name: req.body.name,
-      email: req.body.email,
-      spec: req.body.spec,
-      exp: req.body.exp,
-      contact: req.body.contact,
-      workingOn: req.body.workingOn,
-      graduatedFrom: req.body.graduatedFrom,
-      password: hashpassword,
-    });
-
-    const doctors = await newDoctor.save();
-    res.status(200).json({ doctors });
+    const doctor = await Doctor.findById(req.params.id).populate("userId");
+    res.json(doctor);
   } catch (error) {
-    console.log(error);
-    res.status(404).json({ message: "Failed To Register" });
+    res.status(404).json({ message: error.message });
   }
 };
 
-const doctorLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+// Doctor Vaidation
+const isDoctorValid = (newdoctor) => {
+  let errorList = [];
+  if (!newdoctor.firstName) {
+    errorList[errorList.length] = "Please enter first name";
+  }
+  if (!newdoctor.lastName) {
+    errorList[errorList.length] = "Please enter last name";
+  }
+  if (!newdoctor.email) {
+    errorList[errorList.length] = "Please enter email";
+  }
+  if (!newdoctor.password) {
+    errorList[errorList.length] = "Please enter password";
+  }
 
-    const doctor = await doctormodel.findOne({ email });
-
-    if (!doctor) {
-      return res.status(404).json({ message: "Invalid Credentials" });
-    }
-
-    const validPassword = await bcrypt.compare(password, doctor.password);
-
-    if (!validPassword) {
-      return res.status(404).json({ message: "Invalid Credentials" });
-    }
-
-    const { _id, name, spec, exp, contact, workingOn, graduatedFrom } = doctor;
-
-    res.status(200).json({
-      _id,
-      name,
-      email,
-      spec,
-      exp,
-      contact,
-      workingOn,
-      graduatedFrom,
-    });
-  } catch (error) {
-    console.error("Error in doctorLogin:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+  if (errorList.length > 0) {
+    result = {
+      status: false,
+      errors: errorList,
+    };
+    return result;
+  } else {
+    return { status: true };
   }
 };
 
-const doctorReview = async (req, res) => {
-  const { comment, userId, ratings, username, profilePic } = req.body;
-
+// Add Doctor TO DataBase
+const saveDoctor = async (req, res) => {
   try {
-    const updatedDoctor = await Doctor.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $push: {
-          reviews: {
-            comment,
-            userId,
-            ratings,
-            username,
-            profilePic,
+    let newdoctor = req.body;
+
+    let doctorValidStatus = isDoctorValid(newdoctor);
+    if (!doctorValidStatus.status) {
+      return res.status(400).json({
+        message: "error",
+        errors: doctorValidStatus.errors,
+      });
+    }
+
+    const userDetails = await User.create({
+      email: newdoctor.email,
+      username: newdoctor.username,
+      firstName: newdoctor.firstName,
+      lastName: newdoctor.lastName,
+      password: newdoctor.password,
+      userType: "Doctor",
+      activated: true,
+    });
+
+    await Doctor.create({
+      userId: userDetails._id,
+      phone: newdoctor.phone,
+      department: newdoctor.department,
+    });
+
+    res.status(200).json({ message: "success" });
+  } catch (error) {
+    res.status(400).json({ message: "error", errors: [error.message] });
+  }
+};
+
+//get Doctor
+const getDoctors = async (req, res) => {
+  try {
+    var searchdoctor = new RegExp(req.query.name, "i");
+
+    let doctors = [];
+    if (!searchdoctor) {
+      doctors = await Doctor.find({}).populate("userId");
+    } else {
+      doctors = await Doctor.find()
+        .populate({
+          path: "userId",
+          select: "firstName lastName email username",
+          match: {
+            $or: [
+              { firstName: { $regex: searchdoctor } },
+              { lastName: { $regex: searchdoctor } },
+              { email: { $regex: searchdoctor } },
+            ],
           },
-        },
-      },
-      {
-        new: true,
-      }
-    );
-
-    if (!updatedDoctor) {
-      return res.status(404).json({ message: "Doctor not found" });
+        })
+        .then((doctors) => doctors.filter((doctor) => doctor.userId != null));
     }
 
-    res.status(200).json(updatedDoctor.reviews);
+    res.json(doctors);
   } catch (error) {
-    console.error("Error in doctorReview:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//Update Doctors
+const updateDoctor = async (req, res) => {
+  let newdoctor = req.body;
+
+  let doctorValidStatus = isDoctorValid(newdoctor);
+  if (!doctorValidStatus.status) {
+    res.status(400).json({
+      message: "error",
+      errors: doctorValidStatus.errors,
+    });
+  } else {
+    try {
+      await Doctor.updateOne({ _id: req.params.id }, { $set: req.body });
+      res.status(200).json({ message: "success" });
+    } catch (error) {
+      res.status(400).json({ message: "error", errors: [error.message] });
+    }
+  }
+};
+
+const deleteDoctor = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id).populate("userId");
+
+    const deleteddoctor = await Doctor.deleteOne({ _id: req.params.id });
+
+    const deleteduser = await User.deleteOne({ _id: doctor.userId._id });
+    res.status(200).json(deleteddoctor);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
 module.exports = {
-  doctorRegister,
-  doctorLogin,
-  doctorReview,
+  getDoctors,
+  getDoctorById,
+  saveDoctor,
+  updateDoctor,
+  deleteDoctor,
 };
