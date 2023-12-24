@@ -62,7 +62,7 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/TahirRajpoot/HealthCarePlus_SE_Project
+git clone https://github.com/TahirRajpoot/HealthCarePlus_SE_Project.git
 ```
 
 ### 2. Install Dependencies
