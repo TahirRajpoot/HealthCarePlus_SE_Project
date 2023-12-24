@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import PrescriptionTable from "../MUITable/PrescriptionTable";
-import { UserContext } from "../../Context/UserContext";
+import PrescriptionTable from "../../../MUITable/PrescriptionTable";
+import { UserContext } from "../../../../Context/UserContext";
 import moment from "moment";
 
 function PrescriptionList() {
@@ -84,7 +84,7 @@ function PrescriptionList() {
   }, []);
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box component="main" sx={{ flexGrow: 1, p: 11 }}>
       <div className="page-wrapper">
         <div className="content">
           <h4 className="page-title">Prescription</h4>

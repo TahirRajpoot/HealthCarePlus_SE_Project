@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 const Success = () => {
   const [session, setSession] = useState({});
-  const location = useNavigaten();
+  const location = useNavigate();
   const queryLocation = location.search;
   useEffect(() => {
     async function fetchSession() {

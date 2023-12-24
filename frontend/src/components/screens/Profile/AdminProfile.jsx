@@ -65,7 +65,16 @@ function AdminProfile() {
   }, [password]);
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box
+      component="main"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
       <div className="page-wrapper">
         <div className="content">
           <div className="card-box">

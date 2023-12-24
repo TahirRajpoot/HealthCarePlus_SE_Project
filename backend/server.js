@@ -14,6 +14,8 @@ const doctorroutes = require("./routes/doctorRoutes");
 const medicroutes = require("./routes/medicRoutes");
 const dashboardroutes = require("./routes/DashboardRoutes");
 const patientroutes = require("./routes/patientRoutes");
+const AppointmentRoute = require("./routes/AppointmentRoute.js");
+const InvoiceRoute = require("./routes/InvoiceRoute.js");
 
 app.use(bodyParser.json()); // Use bodyParser.json() for JSON parsing
 app.use(cors());
@@ -26,6 +28,10 @@ app.use("/api", prescriptionroutes);
 app.use("/api", medicroutes);
 app.use("/api", dashboardroutes);
 app.use("/api", patientroutes);
+app.use("/api", AppointmentRoute);
+app.use("/api", InvoiceRoute);
+
+app.use("/api/paypal", require("./routes/api/paypal"));
 
 dbconnection;
 

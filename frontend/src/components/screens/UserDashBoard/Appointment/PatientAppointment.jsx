@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Appointment.module.css";
 import { useNavigate } from "react-router-dom";
-import ErrorDialogueBox from "../MUIDialogueBox/ErrorDialogueBox";
 import Box from "@mui/material/Box";
 import MyCalendar from "../Datepicker/MyCalendar";
 import moment from "moment";
@@ -9,10 +8,10 @@ import axios from "axios";
 import {
   BootstrapDialog,
   BootstrapDialogTitle,
-} from "../MUIDialogueBox/BoostrapDialogueBox";
+} from "../../../MUIDialogueBox/BoostrapDialogueBox";
 import DialogContent from "@mui/material/DialogContent";
 import AppointmentForm from "../Forms/AppointmentForm";
-import AppointmentTable from "../MUITable/AppointmentTable";
+import AppointmentTable from "../../../MUITable/AppointmentTable";
 
 function PatientAppointment() {
   const navigate = useNavigate();
@@ -405,12 +404,6 @@ function PatientAppointment() {
         <div></div>
       )}
 
-      <ErrorDialogueBox
-        open={errorDialogueBoxOpen}
-        handleToClose={handleErrorDialogueClose}
-        ErrorTitle="Error"
-        ErrorList={errorList}
-      />
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
