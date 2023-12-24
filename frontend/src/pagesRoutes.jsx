@@ -25,6 +25,15 @@ import Editmedicine from "./components/screens/UserDashBoard/Medicine/EditMedici
 import MedicineList from "./components/screens/UserDashBoard/Medicine/MedicineList";
 import Patient from "./components/screens/UserDashBoard/Patient/Patient";
 import Doctor from "./components/screens/UserDashBoard/Doctor/Doctor";
+import PatientDashboard from "./components/DashBoard/PatientDashboard";
+import DoctorDashboard from "./components/DashBoard/DoctorDashboard";
+import AdminAppointment from "./components/screens/UserDashBoard/Appointment/AdminAppointment";
+import DoctorAppointment from "./components/screens/UserDashBoard/Appointment/DoctorAppointment";
+import PatientAppointment from "./components/screens/UserDashBoard/Appointment/PatientAppointment";
+import PrescriptionList from "./components/screens/UserDashBoard/Prescription/PrescriptionList";
+import Prescription from "./components/screens/UserDashBoard/Prescription/Prescription";
+import Success from "./components/screens/UserDashBoard/Prescription/Success";
+import Cancel from "./components/screens/UserDashBoard/Prescription/Cancel";
 
 function ProtectedAdminRoute({ children }) {
   const { currentUser } = useContext(UserContext);
@@ -48,7 +57,15 @@ export default function PageRoutes() {
         <Route
           index
           element={
-            currentUser.userType == "Admin" ? <AdminDashboard /> : <div />
+            currentUser.userType == "Admin" ? (
+              <AdminDashboard />
+            ) : currentUser.userType == "Doctor" ? (
+              <DoctorDashboard />
+            ) : currentUser.userType == "Patient" ? (
+              <PatientDashboard />
+            ) : (
+              <div />
+            )
           }
         />
         <Route
@@ -123,6 +140,27 @@ export default function PageRoutes() {
           />
         </Route>
 
+        <Route path="prescriptions" element={<Prescription />}>
+          <Route index element={<PrescriptionList />} />
+          <Route path="success" element={<Success />}></Route>
+          <Route path="cancel" element={<Cancel />}></Route>
+        </Route>
+
+        <Route
+          path="appointments"
+          element={
+            currentUser.userType == "Admin" ? (
+              <AdminAppointment />
+            ) : currentUser.userType == "Doctor" ? (
+              <DoctorAppointment />
+            ) : currentUser.userType == "Patient" ? (
+              <PatientAppointment />
+            ) : (
+              <div />
+            )
+          }
+        />
+
         <Route
           path="profile"
           element={
@@ -140,9 +178,9 @@ export default function PageRoutes() {
 
         <Route path="/profile" element={<DoctorProfile />} />
       </Route>
-
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Register />} />
+
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
