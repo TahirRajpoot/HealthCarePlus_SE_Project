@@ -127,7 +127,7 @@ Open your web browser and navigate to http://localhost:3000 to access the MERN s
 - You can customize the application by modifying the code in the `frontend` and `backend` directories.
 
 
-## Contribution Guidelines
+## Contribution Guidelines:
 
 Contributions to enhance the functionality and performance of the Hospital Management System are welcomed. To contribute:
 
@@ -137,8 +137,8 @@ Contributions to enhance the functionality and performance of the Hospital Manag
 4. Thoroughly test to avoid introducing bugs.
 5. Submit a pull request with a clear description of your changes.
 
-Let's collaborate to make healthcare management more efficient and accessible!
 
+Let's collaborate to make healthcare management more efficient and accessible!
 
 
 
